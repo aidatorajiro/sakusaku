@@ -1,0 +1,32 @@
+<style>
+.inactive {
+    background: #CCC;
+}
+.instructon {
+    white-space: pre;
+}
+</style>
+<div id="app" style="display: none;">
+    <div>
+        現在の子音: {{consonant}}<br>
+        音列: {{letters}}<br>
+    </div>
+    <div>
+        復号後文字列: {{decript}}
+    </div>
+    <div class="instructon">
+        A~Zキーで文字入力(上パネル).
+        上下キーで単語選択(下パネル).
+        左右キーで単語長変更(下パネル).
+        決定キーで単語入力(下パネル).
+        音列・日本語変換例:
+            a -> あ
+            t -> た,ち,つ,て,と のどれか
+            tt -> った,っち,っつ,って,っと のどれか
+            ty, ch, cy -> ちゃ,ちぃ,ちゅ,ちぇ,ちょ のどれか
+            tw -> とぁ,とぃ,とぅ,とぇ,とぉ のどれか
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="consts.js"></script>
+<script src="sakusaku.js"></script>
