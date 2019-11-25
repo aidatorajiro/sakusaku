@@ -32,6 +32,7 @@ let put_letter = () => {
 
 window.onkeydown = (ev) => {
     console.log(ev)
+    document.getElementById("phone_input").value = ""
     if (65 <= ev.keyCode && ev.keyCode <= 90) {
         let char = String.fromCharCode(ev.keyCode).toLowerCase();
         if (VOWEL_LIST.includes(char)) {
