@@ -15,19 +15,18 @@
         復号後文字列: {{decript}}
     </div>
     <div class="instructon">
-        A~Zキーで文字入力(上パネル).
-        上下キーで単語選択(下パネル).
-        左右キーで単語長変更(下パネル).
-        決定キーで単語入力(下パネル).
-        音列・日本語変換例:
-            a -> あ
-            t -> た,ち,つ,て,と のどれか
-            tt -> った,っち,っつ,って,っと のどれか
-            ty, ch, cy -> ちゃ,ちぃ,ちゅ,ちぇ,ちょ のどれか
-            tw -> とぁ,とぃ,とぅ,とぇ,とぉ のどれか
+        A~Zキーで文字入力(上パネル:書記モード).
+        上下キーで単語選択(下パネル:解読モード).
+        左右キーで単語長変更(下パネル:解読モード).
+        決定キーで単語入力(下パネル:解読モード).
+    </div>
+    <div class="conv_table">
     </div>
     <input type="text" id="phone_input" placeholder="スマフォ用テキスト入力"/>
+    <!--<input type="button" value="ランダム100音列"/>-->
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="transform_standard.js"></script>
+<script src="make_consonant_table.js"></script>
 <script src="consts.js"></script>
 <script src="sakusaku.js"></script>
