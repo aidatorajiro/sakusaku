@@ -39,12 +39,15 @@ window.onkeydown = (ev) => {
             put_letter()
         }
         if (CONSONANT_LIST.includes(char)) {
-            if (app.consonant == "n" && char == "n") {
+            if (app.consonant === "n" && char === "n") {
                 put_letter()
                 return
             }
             if (CONSONANT_LIST.includes(app.consonant + char)) {
                 app.consonant += char
+            } else if (app.consonant === "n") {
+                put_letter()
+                app.consonant = char
             }
         }
     }
