@@ -54,6 +54,14 @@ window.onkeydown = (ev) => {
             }
         }
     }
+    if (ev.code === "ArrowLeft") {
+        if (app.current_width > 0) {
+            app.current_width -= 1
+        }
+    }
+    if (ev.code === "ArrowRight") {
+        app.current_width += 1
+    }
 }
 
 document.getElementById("app").style.display = "block";
