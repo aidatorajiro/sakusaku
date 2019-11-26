@@ -2,7 +2,7 @@ let CONSONANT_TO_HIRAGANA = {};
 
 {
 
-    function add_each(set, arr) {
+    let add_each = function (set, arr) {
         for (let x of arr) {
             set.add(x)
         }
