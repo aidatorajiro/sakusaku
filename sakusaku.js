@@ -8,7 +8,9 @@ let app = new Vue({
         vowel: "",
         consonant: "",
         letters: [],
-        decript: ""
+        decript: "",
+        current_pos: 0,
+        current_width: 0
     }
 });
 
