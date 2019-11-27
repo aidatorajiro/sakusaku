@@ -18,14 +18,14 @@ dicts = [
 
 sanitized = {}
 
-p = re.compile('[\u30A1-\u30FFー]+')
+p = re.compile('[\u30A1-\u30FF]+')
 
 for filename in dicts:
     with open(filename, "r") as f:
         for line in f:
             line = line[:-1]
             data = line.split("\t")
-            key = jaconv.hira2kata(data[0])
+            key = jaconv.hira2kata(data[0].replace("ー", ""))
             if not p.fullmatch(key):
                 break
             if not data[0] in sanitized:
