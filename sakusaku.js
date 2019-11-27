@@ -67,13 +67,19 @@ let app = new Vue({
             }
         },
         onArrowRight: function () {
-            app.current_width += 1
+            if (app.current_pos + app.current_width < app.letters.length) {
+                app.current_width += 1
+            }
         },
-        onArrowTop: function () {
-            
+        onArrowUp: function () {
+            if (app.selected_word_index !== 0) {
+                app.selected_word_index -= 1
+            }
         },
         onArrowDown: function () {
-
+            if (app.selected_word_index + 1 !== app.word_list.length) {
+                app.selected_word_index += 1
+            }
         },
         onEnter: function () {
             if (app.word_list[app.selected_word_index] !== undefined) {
@@ -106,8 +112,8 @@ window.onkeydown = (ev) => {
     if (ev.code === "ArrowRight") {
         app.onArrowRight()
     }
-    if (ev.code === "ArrowTop") {
-        app.onArrowTop()
+    if (ev.code === "ArrowUp") {
+        app.onArrowUp()
     }
     if (ev.code === "ArrowDown") {
         app.onArrowDown()
