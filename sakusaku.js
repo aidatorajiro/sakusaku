@@ -32,35 +32,47 @@ let put_letter = () => {
     app.vowel = ""
 }
 
+let onArrowLeft = () => {
+    if (app.current_width > 0) {
+        app.current_width -= 1
+    }
+}
+
+let onArrowRight = () => {
+    app.current_width += 1
+}
+
+let onKeyInput = (char) => {
+    if (VOWEL_LIST.includes(char)) {
+        app.vowel = char
+        put_letter()
+    }
+    if (CONSONANT_LIST.includes(char)) {
+        if (app.consonant === "n" && char === "n") {
+            put_letter()
+            return
+        }
+        if (CONSONANT_LIST.includes(app.consonant + char)) {
+            app.consonant += char
+        } else if (app.consonant === "n") {
+            put_letter()
+            app.consonant = char
+        }
+    }
+}
+
 window.onkeydown = (ev) => {
     console.log(ev)
     document.getElementById("phone_input").value = ""
     if (65 <= ev.keyCode && ev.keyCode <= 90) {
         let char = String.fromCharCode(ev.keyCode).toLowerCase();
-        if (VOWEL_LIST.includes(char)) {
-            app.vowel = char
-            put_letter()
-        }
-        if (CONSONANT_LIST.includes(char)) {
-            if (app.consonant === "n" && char === "n") {
-                put_letter()
-                return
-            }
-            if (CONSONANT_LIST.includes(app.consonant + char)) {
-                app.consonant += char
-            } else if (app.consonant === "n") {
-                put_letter()
-                app.consonant = char
-            }
-        }
+        onKeyInput(char)
     }
     if (ev.code === "ArrowLeft") {
-        if (app.current_width > 0) {
-            app.current_width -= 1
-        }
+        onArrowLeft()
     }
     if (ev.code === "ArrowRight") {
-        app.current_width += 1
+       onArrowRight()
     }
 }
 
