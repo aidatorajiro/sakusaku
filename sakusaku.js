@@ -46,9 +46,12 @@ let app = new Vue({
             }
             app.consonant = ""
             app.vowel = ""
+            if (app.letters.length === 1) {
+                app.startLookup()
+            }
         },
         startLookup: function () {
-            let sliced_letters = app.letters.slice(0, app.current_width)
+            let sliced_letters = app.letters.slice(app.current_pos, app.current_pos + app.current_width)
             let sounds = sliced_letters.map(x => VOWEL_TO_HIRAGANA[x] || CONSONANT_TO_HIRAGANA[x])
             let katakana_results = sound_lookup(sounds)
             app.selected_word_index = 0
@@ -73,7 +76,12 @@ let app = new Vue({
 
         },
         onEnter: function () {
-
+            if (app.word_list[app.selected_word_index] !== undefined) {
+                app.decrypt += app.word_list[app.selected_word_index]
+                app.current_pos += app.current_width
+                app.current_width = 1
+                app.startLookup()
+            }
         }
     }
 });
@@ -103,6 +111,9 @@ window.onkeydown = (ev) => {
     }
     if (ev.code === "ArrowDown") {
         app.onArrowDown()
+    }
+    if (ev.code === "Enter") {
+        app.onEnter()
     }
 }
 
