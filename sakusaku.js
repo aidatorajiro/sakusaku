@@ -10,7 +10,45 @@ let app = new Vue({
         letters: [],
         decript: "",
         current_pos: 0,
-        current_width: 0
+        current_width: 0,
+        word_list: []
+    },
+    methods: {
+        onKeyInput: function (char) {
+            if (VOWEL_LIST.includes(char)) {
+                app.vowel = char
+                app.put_letter()
+            }
+            if (CONSONANT_LIST.includes(char)) {
+                if (app.consonant === "n" && char === "n") {
+                    app.put_letter()
+                    return
+                }
+                if (CONSONANT_LIST.includes(app.consonant + char)) {
+                    app.consonant += char
+                } else if (app.consonant === "n") {
+                    app.put_letter()
+                    app.consonant = char
+                }
+            }
+        },
+        put_letter: function () {
+            if (app.consonant == "") {
+                app.letters.push(conv_vowel(app.vowel))
+            } else {
+                app.letters.push(app.consonant)
+            }
+            app.consonant = ""
+            app.vowel = ""
+        },
+        onArrowLeft: function () {
+            if (app.current_width > 0) {
+                app.current_width -= 1
+            }
+        },
+        onArrowRight: function () {
+            app.current_width += 1
+        }
     }
 });
 
@@ -22,57 +60,17 @@ let conv_vowel = (vw) => {
     }
 }
 
-let put_letter = () => {
-    if (app.consonant == "") {
-        app.letters.push(conv_vowel(app.vowel))
-    } else {
-        app.letters.push(app.consonant)
-    }
-    app.consonant = ""
-    app.vowel = ""
-}
-
-let onArrowLeft = () => {
-    if (app.current_width > 0) {
-        app.current_width -= 1
-    }
-}
-
-let onArrowRight = () => {
-    app.current_width += 1
-}
-
-let onKeyInput = (char) => {
-    if (VOWEL_LIST.includes(char)) {
-        app.vowel = char
-        put_letter()
-    }
-    if (CONSONANT_LIST.includes(char)) {
-        if (app.consonant === "n" && char === "n") {
-            put_letter()
-            return
-        }
-        if (CONSONANT_LIST.includes(app.consonant + char)) {
-            app.consonant += char
-        } else if (app.consonant === "n") {
-            put_letter()
-            app.consonant = char
-        }
-    }
-}
-
 window.onkeydown = (ev) => {
-    console.log(ev)
     document.getElementById("phone_input").value = ""
     if (65 <= ev.keyCode && ev.keyCode <= 90) {
         let char = String.fromCharCode(ev.keyCode).toLowerCase();
-        onKeyInput(char)
+        app.onKeyInput(char)
     }
     if (ev.code === "ArrowLeft") {
-        onArrowLeft()
+        app.onArrowLeft()
     }
     if (ev.code === "ArrowRight") {
-       onArrowRight()
+        app.onArrowRight()
     }
 }
 
