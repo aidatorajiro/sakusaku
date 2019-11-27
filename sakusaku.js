@@ -8,7 +8,7 @@ let app = new Vue({
         vowel: "",
         consonant: "",
         letters: [],
-        decript: "",
+        decrypt: "",
         current_pos: 0,
         current_width: 1,
         word_list: [],
@@ -70,6 +70,9 @@ let app = new Vue({
             
         },
         onArrowDown: function () {
+
+        },
+        onEnter: function () {
 
         }
     }
