@@ -33,7 +33,10 @@ for filename in dicts:
             if not data[4] in sanitized[key]:
                 sanitized[key].append(data[4])
 
-sanitized = sorted(sanitized.items())
+sanitized = OrderedDict(sorted(sanitized.items()))
 
-with open("dictionary.js", "w") as f:
-    f.write("let dictionary = " + json.dumps(sanitized, ensure_ascii=False))
+with open("dictionary_table.js", "w") as f:
+    f.write("let dictionary_table = " + json.dumps(sanitized, ensure_ascii=False))
+
+with open("dictionary_key.txt", "w") as f:
+    f.write("\n".join(sanitized.keys()))
