@@ -16,9 +16,9 @@ dicts = [
     "dictionary_oss/dictionary09.txt"
 ]
 
-sanitized = {}
+sanitized = []
 
-p = re.compile('[\u30A1-\u30FF]+')
+p = re.compile('[\u30A1-\u30FA]+')
 
 for filename in dicts:
     with open(filename, "r") as f:
@@ -27,13 +27,17 @@ for filename in dicts:
             data = line.split("\t")
             key = jaconv.hira2kata(data[0].replace("ー", ""))
             if not p.fullmatch(key):
-                break
-            if not data[0] in sanitized:
-                sanitized[key] = []
-            if not data[4] in sanitized[key]:
-                sanitized[key].append(data[4])
+                continue
+            if len(sanitized) < len(key):
+                for _ in range(len(sanitized), len(key)):
+                    sanitized.append({})
+            if not key in sanitized[len(key) - 1]:
+                sanitized[len(key) - 1][key] = []
+            if not data[4] in sanitized[len(key) - 1][key]:
+                sanitized[len(key) - 1][key].append(data[4])
 
-sanitized = sorted(sanitized.items())
+for i in range(len(sanitized)):
+    sanitized[i] = sorted(sanitized[i].items())
 
 with open("dictionary.js", "w") as f:
-    f.write("let dictionary = " + json.dumps(OrderedDict(sanitized), ensure_ascii=False))
+    f.write("let dictionary = " + json.dumps(sanitized, ensure_ascii=False))
