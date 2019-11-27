@@ -10,9 +10,14 @@ let app = new Vue({
         letters: [],
         decript: "",
         current_pos: 0,
-        current_width: 0,
+        current_width: 1,
         word_list: [],
         selected_word: ""
+    },
+    watch: {
+        current_width: function () {
+            app.startLookup()
+        }
     },
     methods: {
         onKeyInput: function (char) {
@@ -42,8 +47,13 @@ let app = new Vue({
             app.consonant = ""
             app.vowel = ""
         },
+        startLookup: function () {
+            let sliced_letters = app.letters.slice(0, app.current_width)
+            let sounds = sliced_letters.map(x => VOWEL_TO_HIRAGANA[x] || CONSONANT_TO_HIRAGANA[x])
+            console.log(sounds)
+        },
         onArrowLeft: function () {
-            if (app.current_width > 0) {
+            if (app.current_width > 1) {
                 app.current_width -= 1
             }
         },
