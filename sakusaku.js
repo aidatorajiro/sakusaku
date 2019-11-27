@@ -50,7 +50,16 @@ let app = new Vue({
         startLookup: function () {
             let sliced_letters = app.letters.slice(0, app.current_width)
             let sounds = sliced_letters.map(x => VOWEL_TO_HIRAGANA[x] || CONSONANT_TO_HIRAGANA[x])
-            console.log(sounds)
+            let katakana_results = sound_lookup(sounds)
+            if (katakana_results === null) {
+                app.word_list = []
+                app.selected_word = ""
+                return
+            }
+            app.word_list = [].concat(...katakana_results.map(x => dictionary_table[x]))
+            if (app.selected_word === "") {
+                app.selected_word = app.word_list[0]
+            }
         },
         onArrowLeft: function () {
             if (app.current_width > 1) {
