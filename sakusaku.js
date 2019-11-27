@@ -11,7 +11,8 @@ let app = new Vue({
         decript: "",
         current_pos: 0,
         current_width: 0,
-        word_list: []
+        word_list: [],
+        selected_word: ""
     },
     methods: {
         onKeyInput: function (char) {
@@ -48,6 +49,10 @@ let app = new Vue({
         },
         onArrowRight: function () {
             app.current_width += 1
+        },
+        onArrowTop: function () {
+        },
+        onArrowDown: function () {
         }
     }
 });
@@ -71,6 +76,12 @@ window.onkeydown = (ev) => {
     }
     if (ev.code === "ArrowRight") {
         app.onArrowRight()
+    }
+    if (ev.code === "ArrowTop") {
+        app.onArrowTop()
+    }
+    if (ev.code === "ArrowDown") {
+        app.onArrowDown()
     }
 }
 
