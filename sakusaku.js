@@ -12,7 +12,7 @@ let app = new Vue({
         current_pos: 0,
         current_width: 1,
         word_list: [],
-        selected_word: ""
+        selected_word_index: 0
     },
     watch: {
         current_width: function () {
@@ -51,15 +51,12 @@ let app = new Vue({
             let sliced_letters = app.letters.slice(0, app.current_width)
             let sounds = sliced_letters.map(x => VOWEL_TO_HIRAGANA[x] || CONSONANT_TO_HIRAGANA[x])
             let katakana_results = sound_lookup(sounds)
+            app.selected_word_index = 0
             if (katakana_results === null) {
                 app.word_list = []
-                app.selected_word = ""
                 return
             }
             app.word_list = [].concat(...katakana_results.map(x => dictionary_table[x]))
-            if (app.selected_word === "") {
-                app.selected_word = app.word_list[0]
-            }
         },
         onArrowLeft: function () {
             if (app.current_width > 1) {
@@ -70,8 +67,10 @@ let app = new Vue({
             app.current_width += 1
         },
         onArrowTop: function () {
+            
         },
         onArrowDown: function () {
+
         }
     }
 });
