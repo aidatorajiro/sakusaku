@@ -37,6 +37,3 @@ sanitized = OrderedDict(sorted(sanitized.items()))
 
 with open("dictionary_table.js", "w") as f:
     f.write("let dictionary_table = " + json.dumps(sanitized, ensure_ascii=False))
-
-with open("dictionary_key.txt", "w") as f:
-    f.write("\n".join(sanitized.keys()))
