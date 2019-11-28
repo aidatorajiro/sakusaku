@@ -10,12 +10,18 @@ let app = new Vue({
         letters: [],
         decrypt: "",
         current_pos: 0,
-        current_width: 1,
+        current_width: 2,
         word_list: [],
         selected_word_index: 0
     },
     watch: {
         current_width: function () {
+            app.startLookup()
+        },
+        current_pos: function () {
+            app.startLookup()
+        },
+        letters: function () {
             app.startLookup()
         }
     },
@@ -46,11 +52,12 @@ let app = new Vue({
             }
             app.consonant = ""
             app.vowel = ""
-            if (app.letters.length === 1) {
-                app.startLookup()
-            }
         },
         startLookup: function () {
+            if (app.current_pos + app.current_width > app.letters.length || app.current_width === 0) {
+                app.word_list =[]
+                return
+            }
             let sliced_letters = app.letters.slice(app.current_pos, app.current_pos + app.current_width)
             let sounds = sliced_letters.map(x => VOWEL_TO_HIRAGANA[x] || CONSONANT_TO_HIRAGANA[x])
             let katakana_results = sound_lookup(sounds)
@@ -62,7 +69,7 @@ let app = new Vue({
             app.word_list = [].concat(...katakana_results.map(x => dictionary_table[x]))
         },
         onArrowLeft: function () {
-            if (app.current_width > 1) {
+            if (app.current_width > 0) {
                 app.current_width -= 1
             }
         },
@@ -85,8 +92,7 @@ let app = new Vue({
             if (app.word_list[app.selected_word_index] !== undefined) {
                 app.decrypt += app.word_list[app.selected_word_index]
                 app.current_pos += app.current_width
-                app.current_width = 1
-                app.startLookup()
+                app.current_width = 0
             }
         }
     }
