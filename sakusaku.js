@@ -6,7 +6,7 @@ let app = new Vue({
         letters: [],
         decrypt: "",
         current_pos: 0,
-        current_width: 2,
+        current_width: 0,
         word_list: [],
         selected_word_index: 0
     },
@@ -64,14 +64,21 @@ let app = new Vue({
             }
             app.word_list = [].concat(...katakana_results.map(x => dictionary_table[x]))
         },
-        onArrowLeft: function () {
+        decrease_width: function () {
             if (app.current_width > 0) {
                 app.current_width -= 1
             }
         },
-        onArrowRight: function () {
+        increase_width: function () {
             if (app.current_pos + app.current_width < app.letters.length) {
                 app.current_width += 1
+            }
+        },
+        add_word: function (word_index) {
+            if (app.word_list[word_index] !== undefined) {
+                app.decrypt += app.word_list[word_index]
+                app.current_pos += app.current_width
+                app.current_width = 0
             }
         },
         onArrowUp: function () {
@@ -86,13 +93,6 @@ let app = new Vue({
         },
         onEnter: function () {
             app.addWord(app.selected_word_index)
-        },
-        add_word: function (word_index) {
-            if (app.word_list[word_index] !== undefined) {
-                app.decrypt += app.word_list[word_index]
-                app.current_pos += app.current_width
-                app.current_width = 0
-            }
         }
     }
 });
@@ -112,10 +112,10 @@ window.onkeydown = (ev) => {
         app.onKeyInput(char)
     }
     if (ev.code === "ArrowLeft" && AVTIVATE_LEFT_RIGHT == true) {
-        app.onArrowLeft()
+        app.decrease_width()
     }
     if (ev.code === "ArrowRight" && AVTIVATE_LEFT_RIGHT == true) {
-        app.onArrowRight()
+        app.increase_width()
     }
     if (ev.code === "ArrowUp" && AVTIVATE_UP_DOWN_ENTER == true) {
         app.onArrowUp()

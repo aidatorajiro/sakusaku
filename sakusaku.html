@@ -1,13 +1,26 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <style>
+* {
+    font-size: 20px;
+    font-family: "ヒラギノ明朝 ProN W3", "HiraMinProN-W3", "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝", serif;
+}
 .inactive {
     background: #CCC;
 }
 .instructon {
     white-space: pre;
 }
+.word {
+    cursor: pointer;
+}
 .word:hover {
+    background: #EEEEEE;
+}
+.arrow {
+    cursor: pointer;
+}
+.arrow:hover {
     background: #EEEEEE;
 }
 </style>
@@ -18,7 +31,7 @@
     </div>
     <div>
         現在位置: {{current_pos}}<br>
-        単語長: {{current_width}}<br>
+        単語長: <span class="arrow" v-on:click="decrease_width">←</span> {{current_width}} <span class="arrow" v-on:click="increase_width">→</span><br>
         マッチする単語: [ <span class="word" v-for="(word, i) in word_list" v-on:click="add_word(i)">"{{word}}", </span>]<br>
         復号後文字列: {{decrypt}}<br>
     </div>
