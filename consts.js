@@ -34,4 +34,4 @@ let ACTIVATE_CONV_VOWEL = false;
 let AVTIVATE_UP_DOWN_ENTER = false;
 
 // whether process left and right keys
-let AVTIVATE_LEFT_RIGHT = false;
+let AVTIVATE_LEFT_RIGHT = true;
