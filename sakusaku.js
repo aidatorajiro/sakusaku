@@ -1,7 +1,3 @@
-let CONSONANT_LIST = Object.keys(CONSONANT_TO_HIRAGANA);
-
-let ACTIVATE_CONV_VOWEL = false;
-
 let app = new Vue({
     el: '#app',
     data: {
@@ -89,8 +85,11 @@ let app = new Vue({
             }
         },
         onEnter: function () {
-            if (app.word_list[app.selected_word_index] !== undefined) {
-                app.decrypt += app.word_list[app.selected_word_index]
+            app.addWord(app.selected_word_index)
+        },
+        add_word: function (word_index) {
+            if (app.word_list[word_index] !== undefined) {
+                app.decrypt += app.word_list[word_index]
                 app.current_pos += app.current_width
                 app.current_width = 0
             }
@@ -112,19 +111,19 @@ window.onkeydown = (ev) => {
         let char = String.fromCharCode(ev.keyCode).toLowerCase();
         app.onKeyInput(char)
     }
-    if (ev.code === "ArrowLeft") {
+    if (ev.code === "ArrowLeft" && AVTIVATE_LEFT_RIGHT == true) {
         app.onArrowLeft()
     }
-    if (ev.code === "ArrowRight") {
+    if (ev.code === "ArrowRight" && AVTIVATE_LEFT_RIGHT == true) {
         app.onArrowRight()
     }
-    if (ev.code === "ArrowUp") {
+    if (ev.code === "ArrowUp" && AVTIVATE_UP_DOWN_ENTER == true) {
         app.onArrowUp()
     }
-    if (ev.code === "ArrowDown") {
+    if (ev.code === "ArrowDown" && AVTIVATE_UP_DOWN_ENTER == true) {
         app.onArrowDown()
     }
-    if (ev.code === "Enter") {
+    if (ev.code === "Enter" && AVTIVATE_UP_DOWN_ENTER == true) {
         app.onEnter()
     }
 }

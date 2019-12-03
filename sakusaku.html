@@ -7,24 +7,24 @@
 .instructon {
     white-space: pre;
 }
+.word:hover {
+    background: #EEEEEE;
+}
 </style>
 <div id="app" style="display: none;">
     <div>
         現在の子音: {{consonant}}<br>
-        音列: {{letters}}<br>
+        音列: [ <span v-for="letter in letters">"{{letter}}", </span>]<br>
     </div>
     <div>
         現在位置: {{current_pos}}<br>
         単語長: {{current_width}}<br>
-        マッチする単語: {{word_list}}<br>
-        選択中単語: {{word_list[selected_word_index]}}<br>
+        マッチする単語: [ <span class="word" v-for="(word, i) in word_list" v-on:click="add_word(i)">"{{word}}", </span>]<br>
         復号後文字列: {{decrypt}}<br>
     </div>
     <div class="instructon">
-        A~Zキーで文字入力(上パネル:書記モード).
-        上下キーで単語選択(下パネル:解読モード).
-        左右キーで単語長変更(下パネル:解読モード).
-        決定キーで単語入力(下パネル:解読モード).
+        A~Zキーで文字入力。 ローマ字で書いてね！
+        ある程度書いたら、"マッチする単語"の中の単語をクリックして選択しよう！
     </div>
     <div class="conv_table">
     </div>
