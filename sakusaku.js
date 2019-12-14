@@ -1,23 +1,22 @@
 let app = new Vue({
     el: '#app',
     data: {
+        original_text: "",
         vowel: "",
         consonant: "",
         letters: [],
         decrypt: "",
+        decrypt_katakana: "",
         current_pos: 0,
         word_list: [],
         word_position: [],
         mouse_left: 0,
         mouse_top: 0,
-        selected_word_index: 0
+        selected_word_index: 0,
+        mode: "writing"
     },
     watch: {
         current_pos: function () {
-            app.start_lookup()
-            app.update_selected_word_index()
-        },
-        letters: function () {
             app.start_lookup()
             app.update_selected_word_index()
         },
@@ -103,6 +102,7 @@ let app = new Vue({
         },
         // Keyboard process functions
         onKeyInput: function (char) {
+            app.original_text += char
             if (VOWEL_LIST.includes(char)) {
                 app.vowel = char
                 app.put_letter()
@@ -122,7 +122,10 @@ let app = new Vue({
         },
         // internal functions
         update_selected_word_index: function () {
+            if (app.mode !== "choose") { return; }
+
             let diff;
+
             if (WORD_CHOICE_METHOD == "ANGLE") {
                 diff = app.word_position.map(p => Math.abs(
                     Math.atan2(
@@ -136,12 +139,15 @@ let app = new Vue({
                     )
                 ));
             }
+
             if (WORD_CHOICE_METHOD == "DISTANCE") {
                 diff = app.word_position.map(p => 
                     (app.mouse_top - p[0])*(app.mouse_top - p[0]) +
                     (app.mouse_left - p[1])*(app.mouse_left - p[1])
                 );
             }
+
+            // select the word with lowest diff value
             let index = diff.indexOf(Math.min(...diff))
             if (app.selected_word_index !== index) {
                 app.speak_word(index)
@@ -155,10 +161,9 @@ let app = new Vue({
                 let sounds = sliced_letters.map(x => VOWEL_TO_HIRAGANA[x] || CONSONANT_TO_HIRAGANA[x])
                 let katakana_results = sound_lookup(sounds)
                 if (katakana_results === null) { continue; }
-                word_list = word_list.concat(
-                    [].concat(...katakana_results.map(x => dictionary_table[x]))
-                      .map(x => [x, width])
-                )
+                // word selialization format: [kanji & hiragana representation, width of the word, katakana representation]
+                let word_results = katakana_results.map(x => [x].concat(dictionary_table[x]).map(y => [y, width, x]))
+                word_list.push(...[].concat(...word_results))
             }
             app.word_list = word_list
             app.calculate_word_position()
@@ -175,13 +180,23 @@ let app = new Vue({
         add_word: function (word_index) {
             if (app.word_list[word_index] !== undefined) {
                 app.decrypt += app.word_list[word_index][0]
+                app.decrypt_katakana += app.word_list[word_index][2]
                 app.current_pos += app.word_list[word_index][1]
             }
         },
         speak_word: function (word_index) {
             if (app.word_list[word_index] !== undefined) {
-                speak(app.word_list[word_index][0])
+                speak(app.word_list[word_index][2])
             }
+        },
+        go_to_choose_mode: function() {
+            app.mode = "choose"
+
+            app.start_lookup()
+
+            setInterval(()=>{
+                app.add_word(app.selected_word_index)
+            }, 2000)
         }
     }
 });
@@ -222,9 +237,5 @@ window.onmousemove = (ev) => {
     app.mouse_left = ev.clientX
     app.mouse_top = ev.clientY
 }
-
-setInterval(()=>{
-    app.add_word(app.selected_word_index)
-}, 2000)
 
 document.getElementById("app").style.display = "block";

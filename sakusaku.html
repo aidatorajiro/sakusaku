@@ -20,16 +20,22 @@ body {
 }
 </style>
 <div id="app" style="display: none;">
-    <div>
-        [ <span v-for="(letter, i) in letters"><span v-if="current_pos == i">:</span>"{{letter}}", </span>] {{consonant}}
+    <div v-if="mode == 'writing'">
+        元の文章 : {{original_text}}
     </div>
+    <p v-if="mode == 'writing'">↓ 子音のみ抽出</p>
     <div>
+        子音リスト : [ <span v-for="(letter, i) in letters"><span v-if="current_pos == i">:</span>"{{letter}}", </span>] {{consonant}}
+    </div>
+    <div v-if="mode == 'writing'">
+        <p>↓ ある程度書いたら、ボタンをおす</p>
+        <button v-on:click="go_to_choose_mode()">GO!</button>
+    </div>
+    <div v-if="mode == 'choose'">
         <span class="word" v-for="(word, i) in word_list" v-bind:class="{selected: selected_word_index == i}"  v-bind:style="{position: 'absolute', top: word_position[i][0], left: word_position[i][1]}">{{word[0]}}</span>
     </div>
-    <div>
+    <div v-if="mode == 'choose'">
         復号後文字列: {{decrypt}}
-    </div>
-    <div class="conv_table">
     </div>
     <!--<input type="button" value="ランダム100音列"/>-->
 </div>
