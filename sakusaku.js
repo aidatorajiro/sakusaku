@@ -105,11 +105,16 @@ let conv_vowel = (vw) => {
     }
 }
 
-let speak = (text) => {
+let speak = (text, rate=2.5, pitch=2) => {
     let speech = new SpeechSynthesisUtterance(text)
-    speech.voice = speechSynthesis.getVoices().filter(x=>x.name == "Kyoko")[0]
-    speech.rate=2.5
-    speech.pitch=2
+    let list = speechSynthesis.getVoices().filter(x=>x.name == "Kyoko")
+    if (list.length === 0) {
+        speech.voice = speechSynthesis.getVoices().filter(x=>x.default)[0]
+    } else {
+        speech.voice = speechSynthesis.getVoices().filter(x=>x.name == "Kyoko")[0]
+    }
+    speech.rate=rate
+    speech.pitch=pitch
     speechSynthesis.cancel()
     speechSynthesis.speak(speech)
 }
