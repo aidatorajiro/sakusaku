@@ -102,6 +102,8 @@ let app = new Vue({
         },
         // Keyboard process functions
         onKeyInput: function (char) {
+            if (app.mode !== "writing") { return; }
+
             app.original_text += char
             if (VOWEL_LIST.includes(char)) {
                 app.vowel = char
@@ -156,6 +158,9 @@ let app = new Vue({
         },
         start_lookup: function () {
             let word_list = [];
+            if (app.letters.length === app.current_pos) {
+                speak(app.decrypt)
+            }
             for (let width = 1; width < Math.min(LIMIT_LOOKUP + 1, app.letters.length - app.current_pos + 1); width++) {
                 let sliced_letters = app.letters.slice(app.current_pos, app.current_pos + width)
                 let sounds = sliced_letters.map(x => VOWEL_TO_HIRAGANA[x] || CONSONANT_TO_HIRAGANA[x])
