@@ -13,14 +13,13 @@ let app = new Vue({
         selected_word_index: 0
     },
     watch: {
-        current_width: function () {
-            app.start_lookup()
-        },
         current_pos: function () {
             app.start_lookup()
+            app.update_selected_word_index()
         },
         letters: function () {
             app.start_lookup()
+            app.update_selected_word_index()
         },
         mouse_left: function () {
             app.update_selected_word_index()
@@ -34,68 +33,71 @@ let app = new Vue({
         calculate_word_position: function () {
             let word_position = []
             /* Method 1: circle with modulo */
-
-            for (let i = 0; i < app.word_list.length; i++) {
-                let theta_top = 2*Math.PI*(i/app.word_list.length)
-                let theta_left = 2*Math.PI*(i/app.word_list.length)
-                let radius_top = window.innerHeight / 2 - 40 - 30*(i % 3)
-                let radius_left = window.innerWidth / 2 - 40 - 30*(i % 3)
-                let offset_top = window.innerHeight / 2
-                let offset_left = window.innerWidth / 2
-                word_position.push([
-                    Math.sin(theta_top) * radius_top + offset_top,
-                    Math.cos(theta_left) * radius_left + offset_left
-                ])
+            if (WORD_LAYOUT == "CIRCLE_MODULO") {
+                for (let i = 0; i < app.word_list.length; i++) {
+                    let theta_top = 2*Math.PI*(i/app.word_list.length)
+                    let theta_left = 2*Math.PI*(i/app.word_list.length)
+                    let radius_top = window.innerHeight / 2 - 40 - 30*(i % 3)
+                    let radius_left = window.innerWidth / 2 - 40 - 30*(i % 3)
+                    let offset_top = window.innerHeight / 2
+                    let offset_left = window.innerWidth / 2
+                    word_position.push([
+                        Math.sin(theta_top) * radius_top + offset_top,
+                        Math.cos(theta_left) * radius_left + offset_left
+                    ])
+                }
             }
 
             /* Method 2: random with antigravity */
-            /*
-            for (let i = 0; i < app.word_list.length; i++) {
-                let top = Math.random() * window.innerHeight
-                let left = Math.random() * window.innerWidth
-                word_position.push([
-                    top,
-                    left
-                ])
-            }
-
-            for (let epoch = 0; epoch < 100; epoch++) {
-            for (let i = 0; i < word_position.length; i++) {
-                for (let j = 0; j < i; j++) {
-                    let it = word_position[i][0]
-                    let il = word_position[i][1]
-                    let jt = word_position[j][0]
-                    let jl = word_position[j][1]
-                    let dt = (jt - it)
-                    let dl = (jl - il)
-                    let dist = dt*dt + dl*dl
-                    if (dist < 40) {
-                        word_position[i][0] -= 100 * dt / dist
-                        word_position[i][1] -= 100 * dl / dist
-                        word_position[j][0] += 100 * dt / dist
-                        word_position[j][1] += 100 * dl / dist
-                        console.log(dist, 100 * dt / dist, 100 * dl / dist)
-                    }
-                }
-            }
-            }
-            */
-
-            /*
-            let columns = Math.ceil(Math.sqrt(app.word_list.length * window.innerWidth / window.innerHeight))
-            let rows = Math.ceil(app.word_list.length / columns)
-            let cell_width = window.innerWidth / columns
-            let cell_height = window.innerHeight / rows
-            for (let c = 0; c < columns; c++) {
-                for (let r = 0; r < rows; r++) {
-                    let top = r * cell_height
-                    let left = c * cell_width
+            if (WORD_LAYOUT == "RANDOM_ANTIGRAVITY") {
+                for (let i = 0; i < app.word_list.length; i++) {
+                    let top = Math.random() * window.innerHeight
+                    let left = Math.random() * window.innerWidth
                     word_position.push([
                         top,
                         left
                     ])
                 }
-            }*/
+
+                for (let epoch = 0; epoch < 100; epoch++) {
+                    for (let i = 0; i < word_position.length; i++) {
+                        for (let j = 0; j < i; j++) {
+                            let it = word_position[i][0]
+                            let il = word_position[i][1]
+                            let jt = word_position[j][0]
+                            let jl = word_position[j][1]
+                            let dt = (jt - it)
+                            let dl = (jl - il)
+                            let dist = dt*dt + dl*dl
+                            if (dist < 40) {
+                                word_position[i][0] -= 100 * dt / dist
+                                word_position[i][1] -= 100 * dl / dist
+                                word_position[j][0] += 100 * dt / dist
+                                word_position[j][1] += 100 * dl / dist
+                                console.log(dist, 100 * dt / dist, 100 * dl / dist)
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Method 3: LATTICE */
+            if (WORD_LAYOUT == "LATTICE") {
+                let columns = Math.ceil(Math.sqrt(app.word_list.length * window.innerWidth / window.innerHeight))
+                let rows = Math.ceil(app.word_list.length / columns)
+                let cell_width = window.innerWidth / columns
+                let cell_height = window.innerHeight / rows
+                for (let c = 0; c < columns; c++) {
+                    for (let r = 0; r < rows; r++) {
+                        let top = r * cell_height
+                        let left = c * cell_width
+                        word_position.push([
+                            top,
+                            left
+                        ])
+                    }
+                }
+            }
 
             app.word_position = word_position
         },
@@ -120,18 +122,27 @@ let app = new Vue({
         },
         // internal functions
         update_selected_word_index: function () {
-            let angle_diff = app.word_position.map(p => Math.abs(
-                Math.atan2(
-                    app.mouse_top - window.innerHeight / 2,
-                    app.mouse_left - window.innerWidth / 2
-                )
-                -
-                Math.atan2(
-                    p[0] - window.innerHeight / 2,
-                    p[1] - window.innerWidth / 2
-                )
-            ));
-            app.selected_word_index = angle_diff.indexOf(Math.min(...angle_diff))
+            let diff;
+            if (WORD_CHOICE_METHOD == "ANGLE") {
+                diff = app.word_position.map(p => Math.abs(
+                    Math.atan2(
+                        app.mouse_top - window.innerHeight / 2,
+                        app.mouse_left - window.innerWidth / 2
+                    )
+                    -
+                    Math.atan2(
+                        p[0] - window.innerHeight / 2,
+                        p[1] - window.innerWidth / 2
+                    )
+                ));
+            }
+            if (WORD_CHOICE_METHOD == "DISTANCE") {
+                diff = app.word_position.map(p => 
+                    (app.mouse_top - p[0])*(app.mouse_top - p[0]) +
+                    (app.mouse_left - p[1])*(app.mouse_left - p[1])
+                );
+            }
+            app.selected_word_index = diff.indexOf(Math.min(...diff))
         },
         start_lookup: function () {
             let word_list = [];

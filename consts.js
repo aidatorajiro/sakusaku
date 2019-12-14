@@ -32,3 +32,9 @@ let ACTIVATE_CONV_VOWEL = false;
 
 // limit of letters lookup
 let LIMIT_LOOKUP = 10;
+
+// layout of word
+let WORD_LAYOUT = "LATTICE"
+
+// method of word choice with mouse
+let WORD_CHOICE_METHOD = "DISTANCE"
