@@ -105,6 +105,15 @@ let conv_vowel = (vw) => {
     }
 }
 
+let speak = (text) => {
+    let speech = new SpeechSynthesisUtterance(text)
+    speech.voice = speechSynthesis.getVoices().filter(x=>x.name == "Kyoko")[0]
+    speech.rate=2.5
+    speech.pitch=2
+    speechSynthesis.cancel()
+    speechSynthesis.speak(speech)
+}
+
 window.onkeydown = (ev) => {
     document.getElementById("phone_input").value = ""
     if (65 <= ev.keyCode && ev.keyCode <= 90) {
