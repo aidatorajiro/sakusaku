@@ -8,7 +8,8 @@ let app = new Vue({
         current_pos: 0,
         current_width: 0,
         word_list: [],
-        selected_word_index: 0
+        selected_word_index: 0,
+        smartphone: false
     },
     watch: {
         current_width: function () {
@@ -113,14 +114,17 @@ let conv_vowel = (vw) => {
     }
 }
 
-let speak = (text, rate=2.5, pitch=2) => {
-    let speech = new SpeechSynthesisUtterance(text)
-    let list = speechSynthesis.getVoices().filter(x=>x.name == "Kyoko")
-    if (list.length === 0) {
-        speech.voice = speechSynthesis.getVoices().filter(x=>x.default)[0]
-    } else {
-        speech.voice = speechSynthesis.getVoices().filter(x=>x.name == "Kyoko")[0]
+let voice
+voice = speechSynthesis.getVoices().filter(x=>x.name == "Kyoko")[0]
+if (voice === undefined) {
+    speechSynthesis.onvoiceschanged = () => {
+        voice = speechSynthesis.getVoices().filter(x=>x.name == "Kyoko")[0]
     }
+}
+
+let speak = (text, rate=1, pitch=2) => {
+    let speech = new SpeechSynthesisUtterance(text)
+    speech.voice = voice
     speech.rate=rate
     speech.pitch=pitch
     speechSynthesis.cancel()
