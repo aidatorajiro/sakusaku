@@ -30,8 +30,5 @@ let CONSONANT_LIST = Object.keys(CONSONANT_TO_HIRAGANA);
 // whether activate vowel to consonant conversion (Just like Hebrew)
 let ACTIVATE_CONV_VOWEL = false;
 
-// whether process up, down and enter keys
-let AVTIVATE_UP_DOWN_ENTER = false;
-
-// whether process left and right keys
-let AVTIVATE_LEFT_RIGHT = true;
+// limit of letters lookup
+let LIMIT_LOOKUP = 10;

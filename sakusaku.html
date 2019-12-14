@@ -9,43 +9,28 @@
 body {
     background-color: black;
 }
-.inactive {
-    background: #CCC;
-}
 .instructon {
     white-space: pre;
 }
 .word {
-    cursor: pointer;
+    transform: translateX(-50%);
 }
-.word:hover {
-    background: #EEEEEE;
-}
-.arrow {
-    cursor: pointer;
-}
-.arrow:hover {
-    background: #EEEEEE;
+.selected {
+    color:aquamarine;
 }
 </style>
 <div id="app" style="display: none;">
     <div>
-        現在の子音: {{consonant}}<br>
-        音列: [ <span v-for="letter in letters">"{{letter}}", </span>]<br>
+        [ <span v-for="(letter, i) in letters"><span v-if="current_pos == i">:</span>"{{letter}}", </span>] {{consonant}}
     </div>
     <div>
-        現在位置: {{current_pos}}<br>
-        単語長: <span class="arrow" v-on:click="decrease_width">←</span> {{current_width}} <span class="arrow" v-on:click="increase_width">→</span><br>
-        マッチする単語: [ <span class="word" v-for="(word, i) in word_list" v-on:click="add_word(i)" v-on:mouseover="speak_word(i)">"{{word}}", </span>]<br>
-        復号後文字列: {{decrypt}}<br>
+        <span class="word" v-for="(word, i) in word_list" v-bind:class="{selected: selected_word_index == i}"  v-bind:style="{position: 'absolute', top: word_position[i][0], left: word_position[i][1]}">{{word[0]}}</span>
     </div>
-    <div class="instructon">
-        A~Zキーで文字入力。 ローマ字で書いてね！
-        ある程度書いたら、"マッチする単語"の中の単語をクリックして選択しよう！
+    <div>
+        復号後文字列: {{decrypt}}
     </div>
     <div class="conv_table">
     </div>
-    <input type="text" v-show="smartphone" id="phone_input" placeholder="スマフォ用テキスト入力"/>
     <!--<input type="button" value="ランダム100音列"/>-->
 </div>
 <script src="vue.js"></script>
