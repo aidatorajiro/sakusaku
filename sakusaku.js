@@ -142,7 +142,11 @@ let app = new Vue({
                     (app.mouse_left - p[1])*(app.mouse_left - p[1])
                 );
             }
-            app.selected_word_index = diff.indexOf(Math.min(...diff))
+            let index = diff.indexOf(Math.min(...diff))
+            if (app.selected_word_index !== index) {
+                app.speak_word(index)
+            }
+            app.selected_word_index = index
         },
         start_lookup: function () {
             let word_list = [];
@@ -176,7 +180,7 @@ let app = new Vue({
         },
         speak_word: function (word_index) {
             if (app.word_list[word_index] !== undefined) {
-                speak(app.word_list[word_index])
+                speak(app.word_list[word_index][0])
             }
         }
     }
