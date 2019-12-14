@@ -12,16 +12,17 @@ let app = new Vue({
     },
     watch: {
         current_width: function () {
-            app.startLookup()
+            app.start_lookup()
         },
         current_pos: function () {
-            app.startLookup()
+            app.start_lookup()
         },
         letters: function () {
-            app.startLookup()
+            app.start_lookup()
         }
     },
     methods: {
+        // Keyboard process functions
         onKeyInput: function (char) {
             if (VOWEL_LIST.includes(char)) {
                 app.vowel = char
@@ -40,16 +41,22 @@ let app = new Vue({
                 }
             }
         },
-        put_letter: function () {
-            if (app.consonant == "") {
-                app.letters.push(conv_vowel(app.vowel))
-            } else {
-                app.letters.push(app.consonant)
+        onArrowUp: function () {
+            if (app.selected_word_index !== 0) {
+                app.selected_word_index -= 1
             }
-            app.consonant = ""
-            app.vowel = ""
         },
-        startLookup: function () {
+        onArrowDown: function () {
+            if (app.selected_word_index + 1 !== app.word_list.length) {
+                app.selected_word_index += 1
+            }
+        },
+        onEnter: function () {
+            app.addWord(app.selected_word_index)
+        },
+
+        // internal functions
+        start_lookup: function () {
             if (app.current_pos + app.current_width > app.letters.length || app.current_width === 0) {
                 app.word_list =[]
                 return
@@ -63,6 +70,15 @@ let app = new Vue({
                 return
             }
             app.word_list = [].concat(...katakana_results.map(x => dictionary_table[x]))
+        },
+        put_letter: function () {
+            if (app.consonant == "") {
+                app.letters.push(conv_vowel(app.vowel))
+            } else {
+                app.letters.push(app.consonant)
+            }
+            app.consonant = ""
+            app.vowel = ""
         },
         decrease_width: function () {
             if (app.current_width > 0) {
@@ -81,18 +97,10 @@ let app = new Vue({
                 app.current_width = 0
             }
         },
-        onArrowUp: function () {
-            if (app.selected_word_index !== 0) {
-                app.selected_word_index -= 1
+        speak_word: function (word_index) {
+            if (app.word_list[word_index] !== undefined) {
+                speak(app.word_list[word_index])
             }
-        },
-        onArrowDown: function () {
-            if (app.selected_word_index + 1 !== app.word_list.length) {
-                app.selected_word_index += 1
-            }
-        },
-        onEnter: function () {
-            app.addWord(app.selected_word_index)
         }
     }
 });

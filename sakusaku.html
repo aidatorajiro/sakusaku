@@ -32,7 +32,7 @@
     <div>
         現在位置: {{current_pos}}<br>
         単語長: <span class="arrow" v-on:click="decrease_width">←</span> {{current_width}} <span class="arrow" v-on:click="increase_width">→</span><br>
-        マッチする単語: [ <span class="word" v-for="(word, i) in word_list" v-on:click="add_word(i)">"{{word}}", </span>]<br>
+        マッチする単語: [ <span class="word" v-for="(word, i) in word_list" v-on:click="add_word(i)" v-on:mouseover="speak_word(i)">"{{word}}", </span>]<br>
         復号後文字列: {{decrypt}}<br>
     </div>
     <div class="instructon">
