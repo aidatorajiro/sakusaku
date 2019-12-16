@@ -1,4 +1,4 @@
-let CONSONANT_TO_HIRAGANA = {};
+let CONSONANT_TO_KATAKANA = {};
 
 {
 
@@ -74,12 +74,12 @@ let CONSONANT_TO_HIRAGANA = {};
         }
     }
 
-    // make CONSONANT_TO_HIRAGANA from table
+    // make CONSONANT_TO_KATAKANA from table
 
     for (let i in table) {
-        CONSONANT_TO_HIRAGANA[i] = Array.from(table[i])
+        CONSONANT_TO_KATAKANA[i] = Array.from(table[i])
     }
 
 }
 
-console.log(JSON.stringify(CONSONANT_TO_HIRAGANA))
+console.log(JSON.stringify(CONSONANT_TO_KATAKANA))

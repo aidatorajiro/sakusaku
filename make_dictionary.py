@@ -16,6 +16,21 @@ dicts = [
     "dictionary_oss/dictionary09.txt"
 ]
 
+komoji_table = {
+    'ァ': 'ア',
+    'ィ': 'イ',
+    'ゥ': 'ウ',
+    'ェ': 'エ',
+    'ォ': 'オ',
+    'ヵ': 'カ',
+    'ヶ': 'ケ',
+    'ッ': 'ツ',
+    'ャ': 'ヤ',
+    'ュ': 'ユ',
+    'ョ': 'ヨ',
+    'ヮ': 'ワ'
+}
+
 sanitized = {}
 
 p = re.compile('[\u30A1-\u30FA]+')
@@ -31,7 +46,7 @@ for filename in dicts:
             if not key in sanitized:
                 sanitized[key] = []
             if not data[4] in sanitized[key]:
-                sanitized[key].append(data[4])
+                sanitized[key].append([data[4], data[0]])
 
 sanitized = OrderedDict(sorted(sanitized.items()))
 

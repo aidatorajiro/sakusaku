@@ -15,7 +15,7 @@ let VOWEL_LIST = [
     "o"
 ];
 
-let VOWEL_TO_HIRAGANA = {
+let VOWEL_TO_KATAKANA = {
     "a": ["ア", "アー"],
     "i": ["イ", "イー"],
     "u": ["ウ", "ウー"],
@@ -25,7 +25,7 @@ let VOWEL_TO_HIRAGANA = {
 
 // consonants must follow following rule:
 //   For all x y (where x and y are non-empty strings), x + y \in CONSONANT => x \in CONSONANT and y \in CONSONANT.
-let CONSONANT_LIST = Object.keys(CONSONANT_TO_HIRAGANA);
+let CONSONANT_LIST = Object.keys(CONSONANT_TO_KATAKANA);
 
 // whether activate vowel to consonant conversion (Just like Hebrew)
 let ACTIVATE_CONV_VOWEL = false;

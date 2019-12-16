@@ -162,11 +162,11 @@ let app = new Vue({
             }
             for (let width = 1; width < Math.min(LIMIT_LOOKUP + 1, app.letters.length - app.current_pos + 1); width++) {
                 let sliced_letters = app.letters.slice(app.current_pos, app.current_pos + width)
-                let sounds = sliced_letters.map(x => VOWEL_TO_HIRAGANA[x] || CONSONANT_TO_HIRAGANA[x])
+                let sounds = sliced_letters.map(x => VOWEL_TO_KATAKANA[x] || CONSONANT_TO_KATAKANA[x])
                 let katakana_results = sound_lookup(sounds)
                 if (katakana_results !== null) {
-                    // word selialization format: [kanji & hiragana representation, width of the word, katakana representation]
-                    let word_results = katakana_results.map(x => dictionary_table[x].map(y => [y, width, x]))
+                    // word selialization format: [kanji & hiragana representation, width of the word, katakana pronounciation]
+                    let word_results = katakana_results.map(x => dictionary_table[x].map(y => [y[0], width, y[1]]))
                     word_list.push(...[].concat(...word_results))
                 } else if (width === 1) {
                     word_list.push(...sounds[0].map(y => [y, width, y]))
