@@ -73,7 +73,6 @@ let app = new Vue({
                                 word_position[i][1] -= 100 * dl / dist
                                 word_position[j][0] += 100 * dt / dist
                                 word_position[j][1] += 100 * dl / dist
-                                console.log(dist, 100 * dt / dist, 100 * dl / dist)
                             }
                         }
                     }
@@ -165,10 +164,13 @@ let app = new Vue({
                 let sliced_letters = app.letters.slice(app.current_pos, app.current_pos + width)
                 let sounds = sliced_letters.map(x => VOWEL_TO_HIRAGANA[x] || CONSONANT_TO_HIRAGANA[x])
                 let katakana_results = sound_lookup(sounds)
-                if (katakana_results === null) { continue; }
-                // word selialization format: [kanji & hiragana representation, width of the word, katakana representation]
-                let word_results = katakana_results.map(x => [x].concat(dictionary_table[x]).map(y => [y, width, x]))
-                word_list.push(...[].concat(...word_results))
+                if (katakana_results !== null) {
+                    // word selialization format: [kanji & hiragana representation, width of the word, katakana representation]
+                    let word_results = katakana_results.map(x => dictionary_table[x].map(y => [y, width, x]))
+                    word_list.push(...[].concat(...word_results))
+                } else if (width === 1) {
+                    word_list.push(...sounds[0].map(y => [y, width, y]))
+                }
             }
             app.word_list = word_list
             app.calculate_word_position()

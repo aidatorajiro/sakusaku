@@ -17,6 +17,10 @@ body {
 }
 .selected {
     color: aquamarine;
+    font-size: 40px;
+}
+button {
+    background-color: black;
 }
 </style>
 <div id="app" style="display: none;">
@@ -27,8 +31,8 @@ body {
     <div>
         子音リスト : [ <span v-for="(letter, i) in letters"><span v-if="current_pos == i">:</span>"{{letter}}", </span>] {{consonant}}
     </div>
+    <p v-if="mode == 'writing'">↓ ある程度書いたら、ボタンをおす</p v-if="mode == 'writing'">
     <div v-if="mode == 'writing'">
-        <p>↓ ある程度書いたら、ボタンをおす</p>
         <button v-on:click="go_to_choose_mode()">GO!</button>
     </div>
     <div v-if="mode == 'choose'">
