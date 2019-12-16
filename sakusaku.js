@@ -158,7 +158,7 @@ let app = new Vue({
         start_lookup: function () {
             let word_list = [];
             if (app.letters.length === app.current_pos) {
-                speak(app.decrypt)
+                speak(app.decrypt_katakana)
             }
             for (let width = 1; width < Math.min(LIMIT_LOOKUP + 1, app.letters.length - app.current_pos + 1); width++) {
                 let sliced_letters = app.letters.slice(app.current_pos, app.current_pos + width)
