@@ -24,16 +24,14 @@ button {
 }
 </style>
 <div id="app" style="display: none;">
-    <div v-if="mode == 'writing'">
-        元の文章 : {{original_text}}
+    <div v-if="mode == 'writing_1' || mode == 'writing_2'">
+        テキストを入力
     </div>
-    <p v-if="mode == 'writing'">↓ 子音のみ抽出</p>
-    <div>
-        子音リスト : [ <span v-for="(letter, i) in letters"><span v-if="current_pos == i">:</span>"{{letter}}", </span>] {{consonant}}
+    <div v-if="mode == 'writing_1' || mode == 'writing_2'">
+        {{original_text}}
     </div>
-    <p v-if="mode == 'writing'">↓ ある程度書いたら、ボタンをおす</p v-if="mode == 'writing'">
-    <div v-if="mode == 'writing'">
-        <button v-on:click="go_to_choose_mode()">GO!</button>
+    <div v-if="mode == 'writing_2'">
+        <button v-on:click="go_to_choose_mode()">子音友達を呼ぶ(ある程度書いたら、ボタンをおす)</button>
     </div>
     <div v-if="mode == 'choose'">
         <span class="word" v-for="(word, i) in word_list" v-bind:class="{selected: selected_word_index == i}"  v-bind:style="{position: 'absolute', top: word_position[i][0], left: word_position[i][1]}">{{word[0]}}</span>

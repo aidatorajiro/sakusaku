@@ -13,9 +13,14 @@ let app = new Vue({
         mouse_left: 0,
         mouse_top: 0,
         selected_word_index: 0,
-        mode: "writing"
+        mode: "writing_1"
     },
     watch: {
+        original_text: function () {
+            if (app.original_text.length > 20) {
+                app.mode = "writing_2"
+            }
+        },
         current_pos: function () {
             app.start_lookup()
             app.update_selected_word_index()
@@ -101,7 +106,7 @@ let app = new Vue({
         },
         // Keyboard process functions
         onKeyInput: function (char) {
-            if (app.mode !== "writing") { return; }
+            if (!app.mode.startsWith("writing_")) { return; }
 
             app.original_text += char
             if (VOWEL_LIST.includes(char)) {
@@ -151,6 +156,7 @@ let app = new Vue({
             // select the word with lowest diff value
             let index = diff.indexOf(Math.min(...diff))
             if (app.selected_word_index !== index) {
+                console.log(app.word_list[index])
                 app.speak_word(index)
             }
             app.selected_word_index = index
@@ -158,14 +164,14 @@ let app = new Vue({
         start_lookup: function () {
             let word_list = [];
             if (app.letters.length === app.current_pos) {
-                speak(app.decrypt_katakana)
+                speak(app.decrypt_katakana, 1, 1)
             }
             for (let width = 1; width < Math.min(LIMIT_LOOKUP + 1, app.letters.length - app.current_pos + 1); width++) {
                 let sliced_letters = app.letters.slice(app.current_pos, app.current_pos + width)
                 let sounds = sliced_letters.map(x => VOWEL_TO_KATAKANA[x] || CONSONANT_TO_KATAKANA[x])
                 let katakana_results = sound_lookup(sounds)
                 if (katakana_results !== null) {
-                    // word selialization format: [kanji & hiragana representation, width of the word, katakana pronounciation]
+                    // word selialization format: [kanji / hiragana / katakana representation, width of the word, pronunciation]
                     let word_results = katakana_results.map(x => dictionary_table[x].map(y => [y[0], width, y[1]]))
                     word_list.push(...[].concat(...word_results))
                 } else if (width === 1) {
@@ -193,7 +199,7 @@ let app = new Vue({
         },
         speak_word: function (word_index) {
             if (app.word_list[word_index] !== undefined) {
-                speak(app.word_list[word_index][2])
+                speak(app.word_list[word_index][2], 1, 1)
             }
         },
         go_to_choose_mode: function() {
@@ -224,7 +230,7 @@ if (voice === undefined) {
     }
 }
 
-let speak = (text, rate=1, pitch=2) => {
+let speak = (text, rate, pitch) => {
     let speech = new SpeechSynthesisUtterance(text)
     speech.voice = voice
     speech.rate=rate
