@@ -34,7 +34,7 @@ let ACTIVATE_CONV_VOWEL = false;
 let LIMIT_LOOKUP = 10;
 
 // layout of word
-let WORD_LAYOUT = "LATTICE"
+let WORD_LAYOUT = "TSUME"
 
 // method of word choice with mouse
 let WORD_CHOICE_METHOD = "DISTANCE"

@@ -45,7 +45,7 @@ for filename in dicts:
                 continue
             if not key in sanitized:
                 sanitized[key] = []
-            if not data[4] in sanitized[key]:
+            if not list(filter(lambda x: x[0] == data[4], sanitized[key])):
                 sanitized[key].append([data[4], jaconv.hira2kata(data[0])])
 
 sanitized = OrderedDict(sorted(sanitized.items()))

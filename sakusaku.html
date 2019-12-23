@@ -5,15 +5,14 @@
     font-size: 20px;
     font-family: "ヒラギノ明朝 ProN W3", "HiraMinProN-W3", "YuMincho", "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝", serif;
     color: white;
+    margin: 0;
+    padding: 0;
 }
 body {
     background-color: black;
 }
 .instructon {
     white-space: pre;
-}
-.word {
-    transform: translateX(-50%);
 }
 .selected {
     color: aquamarine;
@@ -24,6 +23,10 @@ button {
 }
 .text {
     word-break: break-all;
+}
+.word {
+    transform: translate(-50%, -50%);
+    word-break: keep-all;
 }
 </style>
 <div id="app" style="display: none;">
@@ -36,11 +39,11 @@ button {
     <div v-if="mode == 'writing_2'">
         <button v-on:click="go_to_choose_mode()">子音友達を呼ぶ</button>
     </div>
-    <div v-if="mode == 'choose'">
-        <span class="word" v-for="(word, i) in word_list" v-bind:class="{selected: selected_word_index == i}"  v-bind:style="{position: 'absolute', top: word_position[i][0], left: word_position[i][1]}">{{word[0]}}</span>
-    </div>
-    <div v-if="mode == 'choose'">
+    <div class="decrypt" v-if="mode == 'choose'">
         復号後文字列: {{decrypt}}
+    </div>
+    <div class="wordwrap" v-if="mode == 'choose'">
+        <span class="word" v-for="(word, i) in word_list" v-bind:class="{selected: selected_word_index == i}"  v-bind:style="{position: 'absolute', top: word_position[i][0], left: word_position[i][1]}">{{word[0]}}</span>
     </div>
     <!--<input type="button" value="ランダム100音列"/>-->
 </div>

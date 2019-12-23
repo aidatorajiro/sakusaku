@@ -36,15 +36,20 @@ let app = new Vue({
         // style generator functions
         calculate_word_position: function () {
             let word_position = []
+
+            let box_width = window.innerWidth;
+            let box_height = window.innerHeight - 50;
+            let fontsize = 40;
+
             /* Method 1: circle with modulo */
             if (WORD_LAYOUT == "CIRCLE_MODULO") {
                 for (let i = 0; i < app.word_list.length; i++) {
                     let theta_top = 2*Math.PI*(i/app.word_list.length)
                     let theta_left = 2*Math.PI*(i/app.word_list.length)
-                    let radius_top = window.innerHeight / 2 - 40 - 30*(i % 3)
-                    let radius_left = window.innerWidth / 2 - 40 - 30*(i % 3)
-                    let offset_top = window.innerHeight / 2
-                    let offset_left = window.innerWidth / 2
+                    let radius_top = box_height / 2 - 40 - 30*(i % 3)
+                    let radius_left = box_width / 2 - 40 - 30*(i % 3)
+                    let offset_top = box_height / 2
+                    let offset_left = box_width / 2
                     word_position.push([
                         Math.sin(theta_top) * radius_top + offset_top,
                         Math.cos(theta_left) * radius_left + offset_left
@@ -55,8 +60,8 @@ let app = new Vue({
             /* Method 2: random with antigravity */
             if (WORD_LAYOUT == "RANDOM_ANTIGRAVITY") {
                 for (let i = 0; i < app.word_list.length; i++) {
-                    let top = Math.random() * window.innerHeight
-                    let left = Math.random() * window.innerWidth
+                    let top = Math.random() * box_height
+                    let left = Math.random() * box_width
                     word_position.push([
                         top,
                         left
@@ -86,10 +91,10 @@ let app = new Vue({
 
             /* Method 3: LATTICE */
             if (WORD_LAYOUT == "LATTICE") {
-                let columns = Math.ceil(Math.sqrt(app.word_list.length * window.innerWidth / window.innerHeight))
+                let columns = Math.ceil(Math.sqrt(app.word_list.length * box_width / box_height))
                 let rows = Math.ceil(app.word_list.length / columns)
-                let cell_width = window.innerWidth / columns
-                let cell_height = window.innerHeight / rows
+                let cell_width = box_width / columns
+                let cell_height = box_height / rows
                 for (let c = 0; c < columns; c++) {
                     for (let r = 0; r < rows; r++) {
                         let top = r * cell_height
@@ -102,7 +107,67 @@ let app = new Vue({
                 }
             }
 
-            app.word_position = word_position
+            /* Method 4: TSUME */
+            if (WORD_LAYOUT == "TSUME") {
+                let wordsum = app.word_list.map(x => x[0]).join("").length;
+                let wordlim_left = Math.sqrt(wordsum*(box_width)/(box_height))*fontsize;
+
+                let current_left = 0;
+                let current_top = 0;
+                let pre_word_position = []
+                for (let i = 0; i < app.word_list.length; i++) {
+                    let word_len = app.word_list[i][0].length;
+                    let wordsize_left = fontsize * word_len;
+                    let wordsize_top = fontsize;
+                    pre_word_position.push([
+                        current_top,
+                        current_left,
+                        wordsize_top,
+                        wordsize_left
+                    ])
+                    current_left += wordsize_left;
+                    if (current_left > wordlim_left) {
+                        current_left = 0
+                        current_top += fontsize
+                    }
+                }
+                
+                let top_max = 0; // Max of top (height of the word included)
+                let top_max_wordsize_top = 0;
+                let left_max = 0; // Max of left (width of the word included)
+                let left_max_wordsize_left = 0;
+                for (let i = 0; i < pre_word_position.length; i++) {
+                    let top = pre_word_position[i][0] + pre_word_position[i][2]
+                    let left = pre_word_position[i][1] + pre_word_position[i][3]
+
+                    if (top > top_max) {
+                        top_max = top
+                        top_max_wordsize_top = pre_word_position[i][2]
+                    }
+
+                    if (left > left_max) {
+                        left_max = left
+                        left_max_wordsize_left = pre_word_position[i][3]
+                    }
+                }
+
+                let coeff_top = (box_height - top_max_wordsize_top) / (top_max - top_max_wordsize_top)
+                let coeff_left = (box_width - left_max_wordsize_left) / (left_max - left_max_wordsize_left)
+
+                for (let i = 0; i < pre_word_position.length; i++) {
+                    let top = pre_word_position[i][0] * coeff_top
+                    let left = pre_word_position[i][1] * coeff_left
+                    word_position.push([
+                        top + pre_word_position[i][2] / 2,
+                        left + pre_word_position[i][3] / 2
+                    ])
+                }
+            }
+
+            let box_offset_top = 50;
+            let box_offset_left = 0;
+
+            app.word_position = word_position.map(x => [x[0] + box_offset_top, x[1] + box_offset_left])
         },
         // Keyboard process functions
         onKeyInput: function (char) {
@@ -156,7 +221,6 @@ let app = new Vue({
             // select the word with lowest diff value
             let index = diff.indexOf(Math.min(...diff))
             if (force_speak || app.selected_word_index !== index) {
-                console.log(app.word_list[index])
                 app.speak_word(index)
             }
             app.selected_word_index = index
