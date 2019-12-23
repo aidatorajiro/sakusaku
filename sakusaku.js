@@ -23,7 +23,7 @@ let app = new Vue({
         },
         current_pos: function () {
             app.start_lookup()
-            app.update_selected_word_index()
+            app.update_selected_word_index(true)
         },
         mouse_left: function () {
             app.update_selected_word_index()
@@ -127,7 +127,7 @@ let app = new Vue({
             }
         },
         // internal functions
-        update_selected_word_index: function () {
+        update_selected_word_index: function (force_speak = false) {
             if (app.mode !== "choose") { return; }
 
             let diff;
@@ -155,7 +155,7 @@ let app = new Vue({
 
             // select the word with lowest diff value
             let index = diff.indexOf(Math.min(...diff))
-            if (app.selected_word_index !== index) {
+            if (force_speak || app.selected_word_index !== index) {
                 console.log(app.word_list[index])
                 app.speak_word(index)
             }
@@ -230,12 +230,14 @@ if (voice === undefined) {
     }
 }
 
-let speak = (text, rate, pitch) => {
+let speak = (text, rate, pitch, wait = false) => {
     let speech = new SpeechSynthesisUtterance(text)
     speech.voice = voice
     speech.rate=rate
     speech.pitch=pitch
-    speechSynthesis.cancel()
+    if (!wait) {
+        speechSynthesis.cancel()
+    }
     speechSynthesis.speak(speech)
 }
 

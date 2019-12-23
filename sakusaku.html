@@ -22,16 +22,19 @@ body {
 button {
     background-color: black;
 }
+.text {
+    word-break: break-all;
+}
 </style>
 <div id="app" style="display: none;">
     <div v-if="mode == 'writing_1' || mode == 'writing_2'">
-        テキストを入力
+        テキストを入力してください
     </div>
-    <div v-if="mode == 'writing_1' || mode == 'writing_2'">
+    <div class="text" v-if="mode == 'writing_1' || mode == 'writing_2'">
         {{original_text}}
     </div>
     <div v-if="mode == 'writing_2'">
-        <button v-on:click="go_to_choose_mode()">子音友達を呼ぶ(ある程度書いたら、ボタンをおす)</button>
+        <button v-on:click="go_to_choose_mode()">子音友達を呼ぶ</button>
     </div>
     <div v-if="mode == 'choose'">
         <span class="word" v-for="(word, i) in word_list" v-bind:class="{selected: selected_word_index == i}"  v-bind:style="{position: 'absolute', top: word_position[i][0], left: word_position[i][1]}">{{word[0]}}</span>
