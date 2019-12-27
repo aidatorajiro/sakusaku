@@ -43,9 +43,15 @@ button:hover {
     margin: auto;
     margin-top: 40px;
 }
+@keyframes btnanim {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
 .friends_button_wrapper > button {
     width: 200px;
     text-align: center;
+    animation-name: btnanim;
+    animation-duration: 5s;
 }
 </style>
 <div id="app" style="display: none;">
