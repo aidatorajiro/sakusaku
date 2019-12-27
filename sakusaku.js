@@ -155,7 +155,7 @@ let app = new Vue({
                 if (!isFinite(coeff_top)) {
                     coeff_top = 1
                 }
-                
+
                 let coeff_left = (box_width - left_max_wordsize_left) / (left_max - left_max_wordsize_left)
                 if (!isFinite(coeff_left)) {
                     coeff_left = 1
@@ -252,6 +252,7 @@ let app = new Vue({
                     word_list.push(...sounds[0].map(y => [y, width, y]))
                 }
             }
+            shuffle(word_list)
             app.word_list = word_list
             app.calculate_word_position()
         },
@@ -317,6 +318,17 @@ let speak = (text, rate, pitch, wait = false) => {
         speechSynthesis.cancel()
     }
     speechSynthesis.speak(speech)
+}
+
+let shuffle = (a) => {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
 }
 
 window.onkeydown = (ev) => {
