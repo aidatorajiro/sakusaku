@@ -12,7 +12,15 @@ body {
     background-color: black;
 }
 .instructon {
-    white-space: pre;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 50px;
+}
+.text {
+    word-break: break-all;
+    margin: auto;
+    width: 500px;
+    font-size: 40px;
 }
 .selected {
     color: aquamarine;
@@ -21,22 +29,33 @@ body {
 button {
     background-color: black;
 }
-.text {
-    word-break: break-all;
+button:hover {
+    background-color: white;
+    color: black;
+    cursor: pointer;
 }
 .word {
     transform: translate(-50%, -50%);
     word-break: keep-all;
 }
+.friends_button_wrapper {
+    width: 200px;
+    margin: auto;
+    margin-top: 40px;
+}
+.friends_button_wrapper > button {
+    width: 200px;
+    text-align: center;
+}
 </style>
 <div id="app" style="display: none;">
-    <div v-if="mode == 'writing_1' || mode == 'writing_2'">
+    <div class="instructon" v-if="mode == 'writing_1' || mode == 'writing_2'">
         テキストを入力してください
     </div>
     <div class="text" v-if="mode == 'writing_1' || mode == 'writing_2'">
         {{original_text}}
     </div>
-    <div v-if="mode == 'writing_2'">
+    <div class="friends_button_wrapper" v-if="mode == 'writing_2'">
         <button v-on:click="go_to_choose_mode()">子音友達を呼ぶ</button>
     </div>
     <div class="decrypt" v-if="mode == 'choose'">
