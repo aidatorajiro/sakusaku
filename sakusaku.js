@@ -152,7 +152,14 @@ let app = new Vue({
                 }
 
                 let coeff_top = (box_height - top_max_wordsize_top) / (top_max - top_max_wordsize_top)
+                if (!isFinite(coeff_top)) {
+                    coeff_top = 1
+                }
+                
                 let coeff_left = (box_width - left_max_wordsize_left) / (left_max - left_max_wordsize_left)
+                if (!isFinite(coeff_left)) {
+                    coeff_left = 1
+                }
 
                 for (let i = 0; i < pre_word_position.length; i++) {
                     let top = pre_word_position[i][0] * coeff_top
@@ -220,6 +227,9 @@ let app = new Vue({
 
             // select the word with lowest diff value
             let index = diff.indexOf(Math.min(...diff))
+            if (index == -1) {
+                index = 0
+            }
             if (force_speak || app.selected_word_index !== index) {
                 app.speak_word(index)
             }
@@ -228,7 +238,7 @@ let app = new Vue({
         start_lookup: function () {
             let word_list = [];
             if (app.letters.length === app.current_pos) {
-                speak(app.decrypt_katakana, 1, 1)
+                app.final_speak()
             }
             for (let width = 1; width < Math.min(LIMIT_LOOKUP + 1, app.letters.length - app.current_pos + 1); width++) {
                 let sliced_letters = app.letters.slice(app.current_pos, app.current_pos + width)
@@ -263,8 +273,12 @@ let app = new Vue({
         },
         speak_word: function (word_index) {
             if (app.word_list[word_index] !== undefined) {
-                speak(app.word_list[word_index][2], 1, 1)
+                speak(app.word_list[word_index][2], 0.1, 1)
             }
+        },
+        final_speak: function () {
+            speak(app.decrypt_katakana, 0.1, 1, true)
+            speak(app.decrypt, 0.1, 1, true)
         },
         go_to_choose_mode: function() {
             app.mode = "choose"
