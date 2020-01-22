@@ -12,15 +12,21 @@ body {
     background-color: black;
 }
 .instructon {
-    margin-top: 50px;
     text-align: center;
-    font-size: 50px;
+    font-size: 30px;
 }
 .text {
     word-break: break-all;
     margin: auto;
     width: 500px;
     font-size: 40px;
+}
+.text * {
+    word-break: break-all;
+    font-size: 40px;
+}
+.red {
+    color: #653831;
 }
 .selected {
     color: aquamarine;
@@ -53,19 +59,39 @@ button:hover {
     animation-name: btnanim;
     animation-duration: 5s;
 }
+@keyframes baranim {
+  0% {opacity: 0;}
+  50% {opacity: 1;}
+  100% {opacity: 0;}
+}
+.barblinking {
+    animation-duration: 5s;
+    animation-name: baranim;
+    animation-iteration-count: infinite;
+}
+.big {
+    font-size: 40px;
+}
+h1 {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 50px;
+}
 </style>
 <div id="app" style="display: none;">
+    <h1>子音ふれんず</h1>
     <div class="instructon" v-if="mode == 'writing_1' || mode == 'writing_2'">
-        テキストを入力してください
+        文章を入力してください
     </div>
     <div class="text" v-if="mode == 'writing_1' || mode == 'writing_2'">
-        {{original_text}}
+        <span class="barblinking" v-if="current_segment == '' && segments.length == 0">|</span>
+        <span v-for="(sg, i) in segments"><span>{{sg.slice(0, -1)}}</span><span class="red">{{sg[sg.length - 1]}}</span></span>{{current_segment}}
     </div>
     <div class="friends_button_wrapper" v-if="mode == 'writing_2'">
         <button v-on:click="go_to_choose_mode()">子音友達を呼ぶ</button>
     </div>
     <div class="decrypt" v-if="mode == 'choose'">
-        復号後文字列: {{decrypt}}
+        子音ふれんど: {{decrypt}}
     </div>
     <div class="wordwrap" v-if="mode == 'choose'">
         <span class="word" v-for="(word, i) in word_list" v-bind:class="{selected: selected_word_index == i}"  v-bind:style="{position: 'absolute', top: word_position[i][0], left: word_position[i][1]}">{{word[0]}}</span>
