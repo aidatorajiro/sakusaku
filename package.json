@@ -1,0 +1,9 @@
+{
+  "name": "sakusaku",
+  "version": "2.0.0",
+  "description": "sakusaku sakubunnnnnnnnn.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  }
+}
