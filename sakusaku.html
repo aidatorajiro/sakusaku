@@ -1,3 +1,7 @@
+<!doctype html>
+<html>
+<head>
+<title>子音ふれんず ver. 4くらい</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <style>
@@ -114,6 +118,8 @@ button {
     opacity: 0;
 }
 </style>
+</head>
+<body>
 <div id="app" style="display: none;">
     <div class="upper_bar" v-if="mode == 'choose'" v-bind:style="{width: progress*100 + '%'}"></div>
     <h1 class="friends_top" v-if="mode == 'writing_1' || mode == 'writing_2'">子音ふれんず</h1>
@@ -131,7 +137,7 @@ button {
         <p class="friends_final" v-if="mode == 'final' || mode == 'reset'">子音ふれんどは...</p>{{decrypt}}
     </div>
     <div class="wordwrap" v-if="mode == 'choose'">
-        <span class="word" v-for="(word, i) in word_list" v-bind:class="{selected: selected_word_index == i}"  v-bind:style="{position: 'absolute', top: word_position[i][0], left: word_position[i][1]}">{{word[0]}}</span>
+        <span class="word" v-for="(word, i) in word_list" v-bind:class="{selected: selected_word_index == i}"  v-bind:style="{position: 'absolute', top: word_position[i][0] + 'px', left: word_position[i][1] + 'px'}">{{word[0]}}</span>
     </div>
 </div>
 <script src="vue.js"></script>
@@ -142,3 +148,5 @@ button {
 <script src="consts.js"></script>
 <script src="lookup.js"></script>
 <script src="sakusaku.js"></script>
+</body>
+</html>
