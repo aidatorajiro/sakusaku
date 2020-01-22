@@ -358,6 +358,10 @@ let shuffle = (a) => {
     return a;
 }
 
+setInterval(function () {
+    window.scrollBy(0,1);
+}, 20);
+
 window.onkeydown = (ev) => {
     if (65 <= ev.keyCode && ev.keyCode <= 90) {
         let char = String.fromCharCode(ev.keyCode).toLowerCase();
