@@ -63,8 +63,10 @@ calculate_word_position: function () {
     let word_position = []
 
     let box_width = window.innerWidth;
-    let box_height = window.innerHeight - 50;
+    let box_height = window.innerHeight - 60;
     let fontsize = 40;
+    
+    // First, calculate word position in box_width*box_height rectangle
 
     /* Method 1: circle with modulo */
     if (WORD_LAYOUT == "CIRCLE_MODULO") {
@@ -134,8 +136,8 @@ calculate_word_position: function () {
 
     /* Method 4: TSUME */
     if (WORD_LAYOUT == "TSUME") {
-        let wordsum = app.word_list.map(x => x[0]).join("").length;
-        let wordlim_left = Math.sqrt(wordsum*(box_width)/(box_height))*fontsize;
+        let wordsum = app.word_list.map(x => x[0]).join("").length; // get the number of characters that will be displayed
+        let wordlim_left = Math.sqrt(wordsum*(box_width)/(box_height))*fontsize; // calculate the maximum number of horizontal characters
 
         let current_left = 0;
         let current_top = 0;
@@ -195,6 +197,8 @@ calculate_word_position: function () {
             ])
         }
     }
+    
+    // Second, add some offset to calculated coordinatess
 
     let box_offset_top = 50;
     let box_offset_left = 0;
