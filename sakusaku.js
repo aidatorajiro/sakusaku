@@ -30,6 +30,23 @@ let app = new Vue({
         }
     },
     methods: {
+        reset_all: function () {
+            app.vowel = ""
+            app.consonant = ""
+            app.letters = []
+            app.segments = []
+            app.current_segment = ""
+            app.decrypt = ""
+            app.decrypt_katakana = ""
+            app.current_pos = 0
+            app.word_list = []
+            app.word_position = []
+            app.mouse_left = 0
+            app.mouse_top = 0
+            app.selected_word_index = 0
+            app.mode = "writing_1"
+            app.progress = 0
+        },
         // style generator functions
         calculate_word_position: function () {
             let word_position = []
@@ -283,6 +300,9 @@ let app = new Vue({
             speak(app.decrypt_katakana, 0.1, 1, true)
             speak(app.decrypt, 0.1, 1, true)
             app.mode = "final"
+            setTimeout(() => {
+                app.reset_all()
+            }, 50000)
         },
         go_to_choose_mode: function() {
             app.mode = "choose"
