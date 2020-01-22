@@ -80,7 +80,7 @@ button:hover {
     font-size: 40px;
 }
 h1 {
-    margin-top: 15%;
+    margin-top: 300px;
     text-align: center;
     font-size: 50px;
 }
@@ -96,15 +96,10 @@ button {
 }
 @keyframes fadeout {
   0% {opacity: 1;}
-  75% {opacity: 0.98;}
-  80% {opacity: 0.87;}
-  85% {opacity: 0.65;}
-  90% {opacity: 0.43;}
-  95% {opacity: 0.11;}
   100% {opacity: 0.00;}
 }
 .fadeout {
-    animation-duration: 40s;
+    animation-duration: 10s;
     animation-name: fadeout;
     opacity: 0;
 }
@@ -122,7 +117,7 @@ button {
     <div class="friends_button_wrapper" v-if="mode == 'writing_2'">
         <button v-on:click="go_to_choose_mode()">子音友達を呼ぶ</button>
     </div>
-    <div v-bind:class="{decrypt: true, decrypt_big: mode == 'final', fadeout: mode == 'final'}" v-if="mode == 'choose' || mode == 'final'">
+    <div v-bind:class="{decrypt: true, decrypt_big: mode == 'final' || mode == 'reset', fadeout: mode == 'reset'}" v-if="mode == 'choose' || mode == 'final' || mode == 'reset'">
         子音ふれんど: {{decrypt}}
     </div>
     <div class="wordwrap" v-if="mode == 'choose'">

@@ -14,7 +14,17 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({backgroundColor: '#000000', alwaysOnTop: true, thickFrame: true, fullscreen: true, kiosk: true, frame: false})
+  mainWindow = new BrowserWindow({
+    backgroundColor: '#000000',
+    alwaysOnTop: true,
+    thickFrame: true,
+    fullscreen: true,
+    kiosk: true,
+    frame: false,
+    webPreferences: {
+        devTools: false
+    }
+  })
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -35,6 +45,7 @@ function createWindow () {
   })
   
   // de-register quit things
+  /*
   globalShortcut.register('CommandOrControl+Q', () => {
   })
   globalShortcut.register('CommandOrControl+W', () => {
@@ -42,8 +53,14 @@ function createWindow () {
   globalShortcut.register('Shift+CommandOrControl+;', () => {
   })
   globalShortcut.register('CommandOrControl+-', () => {
-  })
+  })*/
 }
+
+/*
+window.onbeforeunload = (e) => {
+  console.log('I do not want to be closed')
+  e.returnValue = false // equivalent to `return false` but not recommended
+}*/
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

@@ -19,13 +19,16 @@ let app = new Vue({
     },
     watch: {
         current_pos: function () {
+            if (app.mode !== "choose") { return; }
             app.start_lookup()
             app.update_selected_word_index(true)
         },
         mouse_left: function () {
+            if (app.mode !== "choose") { return; }
             app.update_selected_word_index()
         },
         mouse_top: function () {
+            if (app.mode !== "choose") { return; }
             app.update_selected_word_index()
         }
     },
@@ -192,7 +195,7 @@ let app = new Vue({
         },
         // Keyboard process functions
         onKeyInput: function (char) {
-            if (!app.mode.startsWith("writing_")) { return; }
+            if (app.mode !== 'writing_1' && app.mode !== 'writing_2') { return; }
             if (app.letters.length > 0) {
                 app.mode = "writing_2"
             }
@@ -253,6 +256,7 @@ let app = new Vue({
             app.selected_word_index = index
         },
         start_lookup: function () {
+            if (app.mode !== "choose") { return; }
             let word_list = [];
             if (app.letters.length === app.current_pos) {
                 app.final_speak()
@@ -300,22 +304,11 @@ let app = new Vue({
             speak(app.decrypt_katakana, 0.1, 1, true)
             speak(app.decrypt, 0.1, 1, true)
             app.mode = "final"
-            setTimeout(() => {
-                app.reset_all()
-            }, 50000)
         },
         go_to_choose_mode: function() {
             app.mode = "choose"
-
             app.start_lookup()
-
-            setInterval(()=>{
-                app.progress += 0.008333333333333333
-                if (app.progress > 1) {
-                    app.add_word(app.selected_word_index)
-                    app.progress = 0
-                }
-            }, 1000/60)
+            app.update_selected_word_index(true)
         }
     }
 });
@@ -339,8 +332,8 @@ if (voice === undefined) {
 let speak = (text, rate, pitch, wait = false) => {
     let speech = new SpeechSynthesisUtterance(text)
     speech.voice = voice
-    speech.rate=rate
-    speech.pitch=pitch
+    speech.rate = rate
+    speech.pitch = pitch
     if (!wait) {
         speechSynthesis.cancel()
     }
@@ -358,9 +351,31 @@ let shuffle = (a) => {
     return a;
 }
 
+/* interval funcs */
 setInterval(function () {
-    window.scrollBy(0,1);
-}, 20);
+    if (app.mode == 'final' && !speechSynthesis.speaking) {
+        app.mode = 'reset'
+        setTimeout(function () {
+            app.reset_all()
+        }, 10000)
+    }
+}, 1000)
+
+setInterval(function () {
+    if (app.mode == 'writing_1' || app.mode == 'writing_2') {
+        window.scrollBy(0, 1);
+    }
+}, 20)
+
+setInterval(function () {
+    if (app.mode == 'choose') {
+        app.progress += 0.008333333333333333
+        if (app.progress > 1) {
+            app.add_word(app.selected_word_index)
+            app.progress = 0
+        }
+    }
+}, 1000/60)
 
 window.onkeydown = (ev) => {
     if (65 <= ev.keyCode && ev.keyCode <= 90) {

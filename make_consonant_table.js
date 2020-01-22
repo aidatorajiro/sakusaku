@@ -81,5 +81,3 @@ let CONSONANT_TO_KATAKANA = {};
     }
 
 }
-
-console.log(JSON.stringify(CONSONANT_TO_KATAKANA))
