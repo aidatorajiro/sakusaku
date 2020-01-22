@@ -1,10 +1,11 @@
 let app = new Vue({
     el: '#app',
     data: {
-        original_text: "",
         vowel: "",
         consonant: "",
         letters: [],
+        segments: [], // segmented original text
+        current_segment: "",
         decrypt: "",
         decrypt_katakana: "",
         current_pos: 0,
@@ -16,11 +17,6 @@ let app = new Vue({
         mode: "writing_1"
     },
     watch: {
-        original_text: function () {
-            if (app.original_text.length > 20) {
-                app.mode = "writing_2"
-            }
-        },
         current_pos: function () {
             app.start_lookup()
             app.update_selected_word_index(true)
@@ -179,8 +175,11 @@ let app = new Vue({
         // Keyboard process functions
         onKeyInput: function (char) {
             if (!app.mode.startsWith("writing_")) { return; }
+            if (app.letters.length > 0) {
+                app.mode = "writing_2"
+            }
 
-            app.original_text += char
+            app.current_segment += char
             if (VOWEL_LIST.includes(char)) {
                 app.vowel = char
                 app.put_letter()
@@ -262,6 +261,8 @@ let app = new Vue({
             } else {
                 app.letters.push(app.consonant)
             }
+            app.segments.push(app.current_segment)
+            app.current_segment = ""
             app.consonant = ""
             app.vowel = ""
         },
