@@ -91,6 +91,20 @@ h1 {
 button {
     border: 1px white solid;
 }
+@keyframes fadeout {
+  0% {opacity: 1;}
+  75% {opacity: 0.98;}
+  80% {opacity: 0.87;}
+  85% {opacity: 0.65;}
+  90% {opacity: 0.43;}
+  95% {opacity: 0.11;}
+  100% {opacity: 0.00;}
+}
+.fadeout {
+    animation-duration: 40s;
+    animation-name: fadeout;
+    opacity: 0;
+}
 </style>
 <div id="app" style="display: none;">
     <div class="upper_bar" v-if="mode == 'choose'" v-bind:style="{width: progress*100 + '%'}"></div>
@@ -105,7 +119,7 @@ button {
     <div class="friends_button_wrapper" v-if="mode == 'writing_2'">
         <button v-on:click="go_to_choose_mode()">子音友達を呼ぶ</button>
     </div>
-    <div v-bind:class="{decrypt: true, decrypt_big: mode == 'final'}" v-if="mode == 'choose' || mode == 'final'">
+    <div v-bind:class="{decrypt: true, decrypt_big: mode == 'final', fadeout: mode == 'final'}" v-if="mode == 'choose' || mode == 'final'">
         子音ふれんど: {{decrypt}}
     </div>
     <div class="wordwrap" v-if="mode == 'choose'">
