@@ -335,6 +335,7 @@ go_to_choose_mode: function() {
 }
 });
 
+// vowel conversion util fuunction
 let conv_vowel = (vw) => {
     if (ACTIVATE_CONV_VOWEL === true) {
         return CONV_VOWEL_TABLE[vw];
@@ -343,6 +344,7 @@ let conv_vowel = (vw) => {
     }
 }
 
+// voice processings util fuunction
 let voice
 voice = speechSynthesis.getVoices().filter(x=>x.name == "Kyoko")[0]
 if (voice === undefined) {
@@ -362,6 +364,7 @@ let speak = (text, rate, pitch, wait = false) => {
     speechSynthesis.speak(speech)
 }
 
+// shuffle util function
 let shuffle = (a) => {
     var j, x, i;
     for (i = a.length - 1; i > 0; i--) {
@@ -373,7 +376,9 @@ let shuffle = (a) => {
     return a;
 }
 
-/* interval funcs */
+// interval funcs
+
+// final
 setInterval(function () {
     if (app.mode == 'final' && !speechSynthesis.speaking) {
         app.mode = 'reset'
@@ -383,12 +388,14 @@ setInterval(function () {
     }
 }, 1000)
 
+// writing (window auto scroll)
 setInterval(function () {
     if (app.mode == 'writing_1' || app.mode == 'writing_2') {
         window.scrollBy(0, 1);
     }
 }, 20)
 
+// choose (fill progress bar)
 setInterval(function () {
     if (app.mode == 'choose') {
         app.progress += 0.008333333333333333
@@ -399,6 +406,7 @@ setInterval(function () {
     }
 }, 1000/60)
 
+// key handler
 window.onkeydown = (ev) => {
     if (65 <= ev.keyCode && ev.keyCode <= 90) {
         let char = String.fromCharCode(ev.keyCode).toLowerCase();
@@ -406,9 +414,11 @@ window.onkeydown = (ev) => {
     }
 }
 
+// mousemove handler
 window.onmousemove = (ev) => {
     app.mouse_left = ev.clientX
     app.mouse_top = ev.clientY
 }
 
+// show app
 document.getElementById("app").style.display = "block";
