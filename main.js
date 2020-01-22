@@ -22,7 +22,7 @@ function createWindow () {
     kiosk: true,
     frame: false,
     webPreferences: {
-        devTools: false
+      devTools: false
     }
   })
 
@@ -44,23 +44,20 @@ function createWindow () {
     mainWindow = null
   })
   
-  // de-register quit things
-  /*
+  // de-register shortcut things
   globalShortcut.register('CommandOrControl+Q', () => {
   })
   globalShortcut.register('CommandOrControl+W', () => {
   })
+  globalShortcut.register('CommandOrControl+R', () => {
+  })
   globalShortcut.register('Shift+CommandOrControl+;', () => {
   })
   globalShortcut.register('CommandOrControl+-', () => {
-  })*/
+  })
+  globalShortcut.register('Option+CommandOrControl+i', () => {
+  })
 }
-
-/*
-window.onbeforeunload = (e) => {
-  console.log('I do not want to be closed')
-  e.returnValue = false // equivalent to `return false` but not recommended
-}*/
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

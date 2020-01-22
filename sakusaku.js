@@ -426,3 +426,8 @@ window.onmousemove = (ev) => {
 
 // show app
 document.getElementById("app").style.display = "block";
+
+// ignore termination
+window.onbeforeunload = (e) => {
+  e.returnValue = false
+}
