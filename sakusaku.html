@@ -7,6 +7,7 @@
     color: white;
     margin: 0;
     padding: 0;
+    font-weight: normal;
 }
 body {
     background-color: black;
@@ -69,7 +70,10 @@ button:hover {
     animation-name: baranim;
     animation-iteration-count: infinite;
 }
-.big {
+.decrypt {
+    margin-top: 15px;
+}
+.decrypt_big {
     font-size: 40px;
 }
 h1 {
@@ -77,9 +81,20 @@ h1 {
     text-align: center;
     font-size: 50px;
 }
+.upper_bar {
+    position: absolute;
+    height: 10px;
+    top: 0px;
+    left: 0px;
+    background-color: azure;
+}
+button {
+    border: 1px white solid;
+}
 </style>
 <div id="app" style="display: none;">
-    <h1>子音ふれんず</h1>
+    <div class="upper_bar" v-if="mode == 'choose'" v-bind:style="{width: progress*100 + '%'}"></div>
+    <h1 v-if="mode == 'writing_1' || mode == 'writing_2'">子音ふれんず</h1>
     <div class="instructon" v-if="mode == 'writing_1' || mode == 'writing_2'">
         文章を入力してください
     </div>
@@ -90,7 +105,7 @@ h1 {
     <div class="friends_button_wrapper" v-if="mode == 'writing_2'">
         <button v-on:click="go_to_choose_mode()">子音友達を呼ぶ</button>
     </div>
-    <div class="decrypt" v-if="mode == 'choose'">
+    <div v-bind:class="{decrypt: true, decrypt_big: mode == 'final'}" v-if="mode == 'choose' || mode == 'final'">
         子音ふれんど: {{decrypt}}
     </div>
     <div class="wordwrap" v-if="mode == 'choose'">

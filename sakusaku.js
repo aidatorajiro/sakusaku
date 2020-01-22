@@ -14,7 +14,8 @@ let app = new Vue({
         mouse_left: 0,
         mouse_top: 0,
         selected_word_index: 0,
-        mode: "writing_1"
+        mode: "writing_1",
+        progress: 0
     },
     watch: {
         current_pos: function () {
@@ -281,6 +282,7 @@ let app = new Vue({
         final_speak: function () {
             speak(app.decrypt_katakana, 0.1, 1, true)
             speak(app.decrypt, 0.1, 1, true)
+            app.mode = "final"
         },
         go_to_choose_mode: function() {
             app.mode = "choose"
@@ -288,8 +290,12 @@ let app = new Vue({
             app.start_lookup()
 
             setInterval(()=>{
-                app.add_word(app.selected_word_index)
-            }, 2000)
+                app.progress += 0.008333333333333333
+                if (app.progress > 1) {
+                    app.add_word(app.selected_word_index)
+                    app.progress = 0
+                }
+            }, 1000/60)
         }
     }
 });
