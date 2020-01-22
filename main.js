@@ -49,8 +49,6 @@ function createWindow () {
   })
   globalShortcut.register('CommandOrControl+W', () => {
   })
-  globalShortcut.register('CommandOrControl+R', () => {
-  })
   globalShortcut.register('Shift+CommandOrControl+;', () => {
   })
   globalShortcut.register('CommandOrControl+-', () => {
