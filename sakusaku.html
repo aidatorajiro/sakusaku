@@ -8,6 +8,7 @@
     margin: 0;
     padding: 0;
     font-weight: normal;
+    user-select: none;
 }
 body {
     background-color: black;
@@ -123,7 +124,6 @@ button {
     <div class="wordwrap" v-if="mode == 'choose'">
         <span class="word" v-for="(word, i) in word_list" v-bind:class="{selected: selected_word_index == i}"  v-bind:style="{position: 'absolute', top: word_position[i][0], left: word_position[i][1]}">{{word[0]}}</span>
     </div>
-    <!--<input type="button" value="ランダム100音列"/>-->
 </div>
 <script src="vue.js"></script>
 <script src="dictionary_table.js"></script>

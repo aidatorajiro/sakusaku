@@ -357,7 +357,7 @@ setInterval(function () {
         app.mode = 'reset'
         setTimeout(function () {
             app.reset_all()
-        }, 10000)
+        }, 13000)
     }
 }, 1000)
 
