@@ -1,5 +1,6 @@
 # Sakusaku
 Sakusaku is a (re-)writing environment to find a sentence sharing consonants with the original sentence.
+さくさく作文。
 
 # Library used
 Vue - Copyright (C) 2014-2019 Evan You
